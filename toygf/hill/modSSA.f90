@@ -242,6 +242,7 @@ contains
   !/* update propensity influneced by SSA */
   subroutine propensity_update_ssa(bin_ita, ita, propensity)
     implicit none
+    integer :: i, j
     integer :: react_type, react1_ita, react2_ita, aux_ita
     double precision :: rt, temp, Kmdl, avg, tempH, propH
     integer, intent(in) :: ita, bin_ita
@@ -299,14 +300,36 @@ contains
             propensity= rt*totPro(ita)/h
 
         case (hill)
+            do i=0, HMEAN-1
+                avg = 0.0
+                do j=1, MM/HMEAN
+                    avg = avg + pp(i*MM/HMEAN+j,aux_ita)
+                end do
+                avg = avg/(MM/HMEAN)
+                avg = avg*avg*avg*avg
+                do j=1, MM/HMEAN
+                    auxt(i*MM/HMEAN+j) = avg
+                end do
+            end do
+
+
             Kmdl = 0.5*h*SCALE
             Kmdl = Kmdl*Kmdl*Kmdl*Kmdl
-            avg = pp(bin_ita,aux_ita)
-            auxt(bin_ita) = avg*avg*avg*avg
-            totPro(ita) = totPro(ita) - prePro(bin_ita, ita)
-            prePro(bin_ita, ita) = pp(bin_ita,react1_ita)*(auxt(bin_ita)/(auxt(bin_ita)+Kmdl))
-            totPro(ita) = totPro(ita) + prePro(bin_ita, ita)
-            propensity = rt*totPro(ita)
+            do j=1,MM
+                prePro(j,ita) = pp(j,react1_ita)*(auxt(j)/(auxt(j)+Kmdl))
+                temp = temp + prePro(j,ita)
+            end do
+            totPro(ita) = temp
+            propensity = rt*temp
+
+
+!            Kmdl = 0.5*h*SCALE
+!            Kmdl = Kmdl*Kmdl*Kmdl*Kmdl
+!            auxt(bin_ita) = avg*avg*avg*avg
+!            totPro(ita) = totPro(ita) - prePro(bin_ita, ita)
+!            prePro(bin_ita, ita) = pp(bin_ita,react1_ita)*(auxt(bin_ita)/(auxt(bin_ita)+Kmdl))
+!            totPro(ita) = totPro(ita) + prePro(bin_ita, ita)
+!            propensity = rt*totPro(ita)
 
         case default
             print *, "Reaction_type in propensity_update_ssa: ", react_type, " not found "
@@ -502,7 +525,7 @@ contains
     implicit none
     integer, intent(in) :: ita
     double precision, intent(out) :: propensity
-    integer :: j
+    integer :: i, j
     integer :: react_type, react1_ita, react2_ita, aux_ita
     double precision :: rt, temp, Kmdl, avg
     
@@ -540,11 +563,21 @@ contains
         propensity = rt*temp/h
       
       case (hill)
+        do i=0, HMEAN-1
+            avg = 0.0
+            do j=1, MM/HMEAN
+                avg = avg + pp(i*MM/HMEAN+j,aux_ita)
+            end do
+            avg = avg/(MM/HMEAN)
+            avg = avg*avg*avg*avg
+            do j=1, MM/HMEAN
+                auxt(i*MM/HMEAN+j) = avg
+            end do
+        end do
+
         Kmdl = 0.5*h*SCALE
         Kmdl = Kmdl*Kmdl*Kmdl*Kmdl
         do j=1,MM
-          avg = pp(j,aux_ita)
-          auxt(j) = avg*avg*avg*avg
           prePro(j,ita) = pp(j,react1_ita)*(auxt(j)/(auxt(j)+Kmdl))
           temp = temp + prePro(j,ita)
         end do

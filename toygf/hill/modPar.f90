@@ -13,6 +13,7 @@ module parameters
   integer, parameter:: DPNUM_ODE = 35
   integer, parameter:: DPNUM_SSA = 33
 
+  integer, parameter:: HMEAN = 10
   integer, parameter:: syn = 1
   integer, parameter:: deg = 2
   integer, parameter:: first_order= 3
