@@ -1,0 +1,4 @@
+#Parameter:
+Diff_Protein = 1.0
+Diff_mRNA = 0.05
+syn_mCtrA = 0.625
