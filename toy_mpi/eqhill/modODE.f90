@@ -64,22 +64,27 @@ contains
         iright = 1
       end if
 
-      do i= 1, 8
+      do i= 1, SNUM_ODE
         c = IJth(y,i,j)
         clt = IJth(y,i,j+ileft)
         crt = IJth(y,i,j+iright)
+
         if (i .LT. CtrA) then
-            diff = D_SP1*(crt - TWO*c + clt)
+            IJth(dy, i, j) = D_SP1*(crt - TWO*c + clt)/(y(neq-1)*y(neq-1))
         else if (i .EQ. CtrA) then
-            diff = D_SP1*(crt - TWO*c + clt) - K_phos_CtrA*DivL*IJth(y,CtrA,j) + K_deph_CtrAp*IJth(y,CtrAp,j)
+            IJth(dy, i, j) = D_SP1*(crt - TWO*c + clt)/(y(neq-1)*y(neq-1)) &
+                - K_phos_CtrA/y(neq-1)*pp(j,CckA_kin)*IJth(y,CtrA,j) &
+                + K_deph_CtrAp/y(neq-1)*pp(j,CckA_phos)*IJth(y,CtrAp,j)
         else if (i .EQ. CtrAp) then
-            diff = D_SP1*(crt - TWO*c + clt) + K_phos_CtrA*DivL*IJth(y,CtrA,j) - K_deph_CtrAp*IJth(y,CtrAp,j)
+            IJth(dy, i, j) = D_SP1*(crt - TWO*c + clt)/(y(neq-1)*y(neq-1)) &
+                + K_phos_CtrA/y(neq-1)*pp(j,CckA_kin)*IJth(y,CtrA,j) &
+                - K_deph_CtrAp/y(neq-1)*pp(j,CckA_phos)*IJth(y,CtrAp,j)
         else if (i .EQ. PleC_f) then
-            diff = D_SP2*(crt - TWO*c + clt)
+            IJth(dy, i, j) = D_SP2*(crt - TWO*c + clt)/(y(neq-1)*y(neq-1))
         else
-            diff = D_SP1*(crt - TWO*c + clt)
-	end if
-	IJth(dy, i, j) = diff/(y(neq-1)*y(neq-1))
+            IJth(dy, i, j) = D_SP1*(crt - TWO*c + clt)/(y(neq-1)*y(neq-1))
+	    end if
+
       end do
 
     end do
@@ -103,12 +108,17 @@ contains
   subroutine propensity_update_ode()
     implicit none
     integer :: i, j, ita
-    double precision :: propensity
+    double precision :: temp, propensity
 
     do i=1, SNUM_ODE
+        temp = 0.0
         do j=1, MM
             pp(j,i) = IJth(y, i, j)
+            temp = temp + pp(j,i)
         end do
+        if ((i .EQ. CtrA) .OR. (i .EQ. CtrAp)) then
+            p(i) = temp
+        end if
     end do
 
     h = y(neq-1)

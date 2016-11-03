@@ -72,8 +72,8 @@ contains
 	    diff = D_SP1*(crt - TWO*c + clt)
         else
 	    diff = D_SP2*(crt - TWO*c + clt)
-	end if
-	IJth(dy, i, j) = diff/(y(neq-1)*y(neq-1))
+	    end if
+	    IJth(dy, i, j) = diff/(y(neq-1)*y(neq-1))
       end do
 
     end do

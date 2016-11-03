@@ -31,36 +31,39 @@ contains
 
       !print error------------------------------
       if (ita>RNUM) then
-	print *, 'a0:', a0
-	do k=1,RNUM
-	    call cal_propensity_ssa(k, pFalse)
-	    if (ABS(pFalse-a(k)) .LT. 0.01) then
-		print *, k, 'a(i):', a(k), pFalse
+        print *, 'a0:', a0
+        do k=1,RNUM
+            call cal_propensity_ssa(k, pFalse)
+
+            if (ABS(pFalse-a(k)) .GT. 1.0e-6) then
+                print *, k, 'a(i):', a(k), pFalse
                 react1_ita = NETWORK(REACT1, k)
-    	    	react2_ita = NETWORK(REACT2, k)
-    		aux_ita = NETWORK(AUX, k)
-		print *, 'p:', p(react1_ita)
-                do j= 1, MM
-                        print *, j, 'pp(j):',pp(j,react1_ita)
-                end do
+                react2_ita = NETWORK(REACT2, k)
+                aux_ita = NETWORK(AUX, k)
+
+                if (react1_ita>0) then
+                    print *, 'p:', p(react1_ita)
+                    do j= 1, MM
+                        print *, j, 'pp(j):', pp(j,react1_ita)
+                    end do
+                end if
 
                 if (react2_ita>0) then
-		print *, 'react2, p:', p(react1_ita),p(react2_ita)
-		do j= 1, MM
-			print *, j, 'pp(j):', pp(j,react1_ita),pp(j,react2_ita)	
-		end do
+                    print *, 'react2, p:', p(react1_ita),p(react2_ita)
+                    do j= 1, MM
+                        print *, j, 'pp(j):', pp(j,react1_ita),pp(j,react2_ita)
+                    end do
                 end if
-		
-		if (aux_ita>0) then
-		print *, 'aux, p:', p(react1_ita),p(aux_ita)
-                do j= 1, MM
+    
+                if (aux_ita>0) then
+                    print *, 'aux, p:', p(react1_ita),p(aux_ita)
+                    do j= 1, MM
                         print *, j, 'pp(j):',pp(j,react1_ita),pp(j,aux_ita)  
-                end do
-		end if
+                    end do
+                end if
 
-	    end if
-	end do
-
+            end if
+        end do
       end if
 
       sum_a = sum_a + a(ita)

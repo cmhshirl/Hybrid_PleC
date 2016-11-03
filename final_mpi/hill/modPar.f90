@@ -77,7 +77,7 @@ module parameters
   !*Para for ODE RATE     *
   !*                      *
   !************************
-  double precision, parameter :: SCALE = 1000.0e0
+  double precision, parameter :: SCALE = 1.0e+3
   double precision, parameter :: D_SP1           = 1.0e+1
   double precision, parameter :: D_SP2           = 1.0e+0  
 !  double precision, parameter :: D_mRNA         = 5.0e-2

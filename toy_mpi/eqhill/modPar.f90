@@ -67,17 +67,17 @@ module parameters
   integer, parameter :: gene_ori	= 44
   integer, parameter :: gene_dup	= 45
 
-  integer, parameter :: syn_OrimrDivJ = 32
-  integer, parameter :: syn_DupmrDivJ = 33
-  integer, parameter :: phos_DivK = 61
-  integer, parameter :: deph_DivKp = 62
+  integer, parameter :: syn_OrimrDivJ = 30
+  integer, parameter :: syn_DupmrDivJ = 31
+  integer, parameter :: phos_DivK = 59
+  integer, parameter :: deph_DivKp = 60
 
   !************************
   !*                      *
   !*Para for ODE RATE     *
   !*                      *
   !************************
-  double precision, parameter :: SCALE = 1000.0e0
+  double precision, parameter :: SCALE = 1.0e+3
   double precision, parameter :: D_SP1           = 1.0e+0
   double precision, parameter :: D_SP2           = 1.0e+0  
 !  double precision, parameter :: D_mRNA         = 5.0e-2
