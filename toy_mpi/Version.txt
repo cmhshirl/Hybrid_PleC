@@ -1,3 +1,9 @@
+#MPI need to change file
+Makefile
+main.f90
+modHelper.f90
+
+
 #Parameter:
 Diff_Protein = 1.0
 Diff_mRNA = 0.05
