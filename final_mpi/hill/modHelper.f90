@@ -21,7 +21,7 @@ contains
    
 
     ! set record file path and name
-    path = '../Data/'
+    path = './data/'
 
     !call getarg(1, buffer)
     !read (buffer, *), sim_num
