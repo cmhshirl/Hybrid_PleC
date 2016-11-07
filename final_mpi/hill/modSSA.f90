@@ -33,11 +33,12 @@ contains
       if (ita>RNUM) then
         pTemp = 0.0
         do k=1,RNUM
-          print *, 'check: ', k, 'a(i):', a(k)
+
           pTemp = pTemp + a(k)
           call cal_propensity_ssa(k, pFalse)
+          print *, 'check: ', k, 'a(i):', a(k), pFalse
 
-          if (ABS(pFalse-a(k)) .GT. 1.0e-6) then
+          if ((pFalse-a(k) .GT. 1.0e-6) .OR. (pFalse-a(k) .LT. -1.0e-6)) then
             print *, k, 'a(i):', a(k), pFalse
             react1_ita = NETWORK(REACT1, k)
             react2_ita = NETWORK(REACT2, k)
@@ -66,7 +67,7 @@ contains
         end do
 
         if (ABS(pTemp-a0) .GT. 1.0e-6) then
-            print *, 'a0: ', a0, 'aSum: ', pTemp
+            print *, 'a0: ', a0, 'r:', random, 'sum:', sum, 'aSum: ', pTemp
         end if
 
       end if
