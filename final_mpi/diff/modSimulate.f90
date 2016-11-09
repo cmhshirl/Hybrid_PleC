@@ -22,7 +22,6 @@ contains
     do i=1, RNUM
       call cal_propensity_ssa(i, propensity)
       a(i) = propensity
-!print *, 'i: ', i, 'a(i): ', a(i), a0
       a0 = a0 + a(i)
     end do
 
@@ -38,26 +37,25 @@ contains
        call integrate(ts, te, istate, jroot)
 
        if (istate == 3) then
-!print *, 'te: ', te, 'a0:', a0 !, 'a(68):',a(68),'p(14):',p(14),'rate(68):',RATE(68)
              call propensity_update_ode()
              call ssa_alg()
              call random_number(random)
              y(neq) = log(random)
 
-!stop -1
        elseif (istate == 2) then
              call write_file(te)
              te = te + TD
              if (te >= T1) then
                 exit
              end if
-!print *,  'CckA_phos:',p(17), 'CckA_kin:',p(18), 'divl:',p(15)
-!print *, 'hill:',a(31),'rev_hill:',a(65)
 
-!print *,'te:',te,'a0:', a0!, p(6) !,'a(7,8):', a(7),a(8)
-!do i=1,RNUM
-!    print *, 'a(', i, '):', a(i)
-!end do
+            !Reinitialize a0 to correct the precision of propensity
+            a0 = 0.0d0;
+            do i=1, RNUM
+                call cal_propensity_ssa(i, propensity)
+                a(i) = propensity
+                a0 = a0 + a(i)
+            end do
 
         else
             flag = .false.

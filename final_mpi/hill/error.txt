@@ -1,2 +1,0 @@
-At line 42 of file modSSA.f90
-Fortran runtime error: Index '0' of dimension 1 of array 'p' below lower bound of 1

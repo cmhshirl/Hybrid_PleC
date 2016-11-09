@@ -13,7 +13,7 @@ contains
 
       seed = abs( mod( ((clock + 37 * (/ (i - 1, i = 1, n) /))*181)*((rank-83)*359), 104729) )
       call random_seed(put = seed)
-      print *, 'rank:',rank, seed
+      !print *, 'rank:',rank, seed
       deallocate(seed)
   end subroutine init_random_seed
 end module rand
