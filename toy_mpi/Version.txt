@@ -2,6 +2,7 @@
 Makefile
 main.f90
 modHelper.f90
+modRand.f90
 
 
 #Parameter:

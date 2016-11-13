@@ -1,0 +1,10 @@
+./start.sh: line 3: 22987 Terminated: 15          ./cell_lsodar $i
+
+real	3m27.794s
+user	3m11.279s
+sys	0m2.253s
+./start.sh: line 3: 22996 Killed: 9               ./cell_lsodar $i
+
+real	3m30.383s
+user	3m12.501s
+sys	0m2.793s

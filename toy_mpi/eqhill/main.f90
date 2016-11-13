@@ -19,7 +19,7 @@ program main
   call set_evn(rank)
 
   !====Init====
-  call init_random_seed()
+  call init_random_seed(rank)
   call init_solver_parameters()
   call init_para()
   call init_ode()

@@ -1,11 +1,14 @@
 program main
   use simulation
   use mpi
+  use rand
 
   implicit none
 
   integer ierr, rank, num_procs
   double precision :: start, finish
+
+  REAL(KIND=R8)::ISEED,USEED
   
   !Initialize MPI.
   call MPI_Init ( ierr )
@@ -20,10 +23,18 @@ program main
 
   !====Init====
   call init_random_seed(rank)
+
+  CALL RANDOM_NUMBER(ISEED)
+  !WRITE(*,*)'SEED',ISEED
+  USEED = DUSTAR(INT(2.0_R8**24*ISEED))
+
   call init_solver_parameters()
   call init_para()
   call init_ode()
   call init_ssa()
+
+CALL RANDOM_NUMBER(ISEED)
+  WRITE(*,*)'SEED',ISEED
 
   !====Main Loop====
   call DNAorigination()
